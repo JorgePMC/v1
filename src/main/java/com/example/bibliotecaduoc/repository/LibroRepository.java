@@ -1,8 +1,11 @@
 package com.example.bibliotecaduoc.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.example.bibliotecaduoc.model.Libro;
+import java.util.List;
 
 @Repository
 // public class LibroRepository {
@@ -10,8 +13,6 @@ import com.example.bibliotecaduoc.model.Libro;
 // // Arreglo que guardara todos los libros
 // private List<Libro> listaLibros = new ArrayList<Libro>();
 public interface LibroRepository extends JpaRepository<Libro, Integer> {
-
-
     // Metodo que retorna todoa los libros
     // public List<Libro> obtenerLibros() {
     // return listaLibros;
@@ -96,12 +97,15 @@ public interface LibroRepository extends JpaRepository<Libro, Integer> {
     // listaLibros.removeIf(x -> x.getId() == id);
     // }
 
-
     // public int totalLibros() {
     // return listaLibros.size();
     // }
     default int totalLibros() {
         return (int) this.count(); // ← "this" se refiere a la instancia del repository
     }
+
+    @Query(value = "SELECT * FROM Libro WHERE autor = :autor", nativeQuery = true)
+    List<Libro> filtroAutor(@Param("Autor") String autor);
+
 
 }

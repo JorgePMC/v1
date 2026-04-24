@@ -49,4 +49,7 @@ public class LibroService {
     public int totalLibrosV2() {
         return libroRepository.totalLibros();
     }
+    public List<Libro> filtroAutorSer(String autor) {
+        return libroRepository.filtroAutor(autor);
+    }
 }
