@@ -19,6 +19,8 @@ import com.example.bibliotecaduoc.model.Libro;
 import com.example.bibliotecaduoc.service.LibroService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.function.client.WebClient;
+import com.example.bibliotecaduoc.dto.PokemonResponse;
 
 
 /**
@@ -29,10 +31,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LibroController {
 
         private final LibroService libroService;
-
+        private final WebClient pokeApiWebClient;
+ 
+ 
         // Constructor injection (mejor práctica 2026)
-        public LibroController(LibroService libroService) {
+        public LibroController(LibroService libroService, WebClient pokeApiWebClient) {
                 this.libroService = libroService;
+                this.pokeApiWebClient = pokeApiWebClient;
         }
 
         @GetMapping
@@ -82,9 +87,30 @@ public class LibroController {
                 return ResponseEntity.ok(total);
         }
 
-        @GetMapping("/autor/{autor}")
-        public List<Libro> filtroAutorCon(@PathVariable String autor) {
-            return libroService.filtroAutorSer(autor);
+        @GetMapping("/editorial/{editorial}")
+        public List<Libro> geteditorialCon(@PathVariable String editorial) {
+            return libroService.filtroeditorial(editorial);
         }
+
+        @GetMapping("/editorial")
+        public List<Libro> geteditorialCon2(@RequestParam String editorial){
+                return libroService.filtroeditorial(editorial);
+        }
+     
+        
+        
+        @GetMapping("/pokeapi")
+        public ResponseEntity<PokemonResponse> consultarPokemon(
+                        @RequestParam(name = "nombre") String nombre) {
+ 
+ 
+                PokemonResponse pokemon = pokeApiWebClient.get()
+                                .uri("/pokemon-species/{nombre}", nombre) // Endpoint más simple
+                                .retrieve().bodyToMono(PokemonResponse.class).block();
+ 
+ 
+                return ResponseEntity.ok(pokemon);
+        }
+        
         
 }

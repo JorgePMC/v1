@@ -43,7 +43,7 @@ public interface LibroRepository extends JpaRepository<Libro, Integer> {
     // // libro.setId(lib.getId());
     // // libro.setIsbn(lib.getIsbn());
     // // libro.setTitulo(lib.getTitulo());
-    // // libro.setAutor(lib.getAutor());
+    // // libro.seteditorial(lib.geteditorial());
     // // libro.setFechaPublicacion(lib.getFechaPublicacion());
     // // libro.setEditorial(lib.getEditorial());
 
@@ -65,7 +65,7 @@ public interface LibroRepository extends JpaRepository<Libro, Integer> {
     // Libro libro1 = new Libro();
     // libro1.setId(id);
     // libro1.setTitulo(lib.getTitulo());
-    // libro1.setAutor(lib.getAutor());
+    // libro1.seteditorial(lib.geteditorial());
     // libro1.setFechaPublicacion(lib.getFechaPublicacion());
     // libro1.setEditorial(lib.getEditorial());
     // libro1.setIsbn(lib.getIsbn());
@@ -104,8 +104,8 @@ public interface LibroRepository extends JpaRepository<Libro, Integer> {
         return (int) this.count(); // ← "this" se refiere a la instancia del repository
     }
 
-    @Query(value = "SELECT * FROM Libro WHERE autor = :autor", nativeQuery = true)
-    List<Libro> filtroAutor(@Param("Autor") String autor);
+    @Query(value = "SELECT * FROM Libro WHERE editorial = :editorial", nativeQuery = true)
+    List<Libro> filtroeditorial(@Param("editorial") String editorial);
 
 
 }
