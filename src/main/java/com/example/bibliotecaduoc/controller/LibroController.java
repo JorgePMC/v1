@@ -17,6 +17,7 @@ import com.example.bibliotecaduoc.exception.ResourceNotFoundException;
 import com.example.bibliotecaduoc.mapper.LibroMapper;
 import com.example.bibliotecaduoc.model.Libro;
 import com.example.bibliotecaduoc.service.LibroService;
+import com.example.bibliotecaduoc.dto.LibroError;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -56,12 +57,14 @@ public class LibroController {
         }
 
         @GetMapping("{id}")
-        public ResponseEntity<Libro> buscarLibro(@PathVariable int id) {
+        public ResponseEntity<?> buscarLibro(@PathVariable int id) {
                 Libro libro = libroService.getLibroId(id);
 
                 if (libro == null) {
-
-                        throw new ResourceNotFoundException("Libro no encontrado para id: " + id);
+                        /*LibroError libro_error = new LibroError(
+                               // "Libro no encontrado!", "Error: 12");
+                        /return ResponseEntity.status(HttpStatus.NOT_FOUND).body(libro_error);
+                        */throw new ResourceNotFoundException("Libro no encontrado para id: " + id);
                 }
 
                 return ResponseEntity.ok(libro);
